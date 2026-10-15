@@ -176,10 +176,16 @@ class other(commands.Cog):
         language = read_data[0]["language_mode"]
 
         #Discord上にヘルプを表示
+        support_url = os.environ.get('Support_server_url')
+        if support_url == None:
+            support_url = os.environ.get('Support_url')
+        if support_url == None:
+            support_url = ""
+
         if language == "ja":
-            message = "Discordサポートサーバーはこちら！\n"
+            message = "Discordサポートサーバーはこちら！\n" + support_url
         elif language == "en":
-            message = "Support Server here!\n"
+            message = "Support Server here!\n" + support_url
 
         await interaction.response.send_message(message,ephemeral=False)
 
