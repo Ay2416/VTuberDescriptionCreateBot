@@ -1,12 +1,18 @@
 # Discord bot import
+import os
 import discord
 from discord.ext import commands
 from discord import app_commands
 
 # My program import
-from Cogs.CommandPrograms.order_change import order_change_program
+# テストサーバー判定用のデコレータ
+def guilds_check(func):
+    if os.environ.get('Test_server') == None or os.environ.get('Test_server') == "0":
+        return func
+    else:
+        return discord.app_commands.guilds(int(os.environ.get('Test_server')))(func)
 
-#@discord.app_commands.guilds(int(os.environ.get('Test_server')))
+@guilds_check
 class order(app_commands.Group):
     def __init__(self, bot: commands.Bot, **kwargs):
         super().__init__(**kwargs)

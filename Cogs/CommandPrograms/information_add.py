@@ -126,15 +126,15 @@ class add_program:
             "x_name" : x_name
         }
 
-        # number_intterupt 順番割込みの指定があった場合に使うread_data
-        with open('./data/guild_data/' + str(interaction.guild.id) + ".ndjson") as f:
-            read_data = ndjson.load(f)
-
         if number_interrupt == None:
             with open('./data/guild_data/' + str(interaction.guild.id) +".ndjson", 'a') as f:
                 writer = ndjson.writer(f)
                 writer.writerow(content)
         else:
+            # number_intterupt 順番割込みの指定があった場合に使うread_data
+            with open('./data/guild_data/' + str(interaction.guild.id) + ".ndjson") as f:
+                read_data = ndjson.load(f)
+
             os.remove('./data/guild_data/' + str(interaction.guild.id) + ".ndjson")
             
             count = 0

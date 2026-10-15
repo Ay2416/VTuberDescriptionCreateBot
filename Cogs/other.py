@@ -12,13 +12,20 @@ load_dotenv()
 # my program import
 
 
+# テストサーバー判定用のデコレータ
+def guilds_check(func):
+    if os.environ.get('Test_server') == None or os.environ.get('Test_server') == "0":
+        return func
+    else:
+        return discord.app_commands.guilds(int(os.environ.get('Test_server')))(func)
+
 class other(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     # /help
     @app_commands.command(name="help",description="コマンドの一覧と説明を出します。 / List and explain the commands.")
-    #@discord.app_commands.guilds(int(os.environ.get('Test_server')))
+    @guilds_check
     @app_commands.guild_only()
     async def help_command(self, interaction: discord.Interaction):
 
@@ -47,6 +54,7 @@ class other(commands.Cog):
                             value="アプリ「Output Description」での概要欄生成の書式を指定します。\n※「title」については任意入力です。入力がない場合は何もつかない状態で表示されるようになります。", inline=False)
             embed.add_field(name="/language language:[言語の選択（ja/en）]", value="このBotのコマンドの言語を変更します。", inline=False)
             embed.add_field(name="/help", value="このBotのコマンドの簡単な使い方を出します。", inline=False)
+            embed.add_field(name="/support", value="サポートサーバーのURLを表示します。", inline=False) 
         else:
             embed=discord.Embed(title="Command list")
             embed.add_field(name="/inforaction add name:[name you want to display] member:[which Discord user to link to] stream_site_url[URL of the site you are distributing] x_url:[X (Twitter)] number_interrupt:[where in the registered number you want to interrupt]",
@@ -61,8 +69,13 @@ class other(commands.Cog):
                             value="Specify the format of the summary column generation in the apps [Output Description]. \n*About [title], it is an optional input. If there is no input, it will be displayed with nothing attached.", inline=False)
             embed.add_field(name="/language language:[Select language (ja/en)]", value="Change the language of this bot's command." , inline=False)
             embed.add_field(name="/help", value="Give a brief usage of this Bot's command." , inline=False)
+            embed.add_field(name="/support", value="Displays the URL of the support server." , inline=False)
         #embed.add_field(name="", inline=False)
 
+        '''
+        if interaction.guild.id == your_guild_id: # もしサーバー限定コマンドの実装があった場合の表記をした場合はここに書く
+            embed.add_field(name="", value="", inline=False)
+        '''
         await interaction.followup.send(embed=embed)
 
         if language == "ja":
@@ -85,7 +98,7 @@ class other(commands.Cog):
     
     # /language
     @app_commands.command(name="language",description="言語を変更します。（jaまたはen） / Change language. (ja or en)")
-    #@discord.app_commands.guilds(int(os.environ.get('Test_server')))
+    @guilds_check
     @app_commands.guild_only()
     @app_commands.choices(language=[discord.app_commands.Choice(name="ja",value="ja"),discord.app_commands.Choice(name="en",value="en")])
     async def language_command(self, interaction: discord.Interaction,language:str):
@@ -144,6 +157,27 @@ class other(commands.Cog):
             print(str(interaction.guild.id) + "の言語を英語に変更しました。")
             embed=discord.Embed(title="Success!", description="Change to English.", color=0x00ff40)
             await interaction.response.send_message(embed=embed, ephemeral=False)
+
+    # /support
+    @app_commands.command(name="support",description="サポートサーバーのURLを表示します。 / Support server URL display.")
+    @guilds_check
+    @app_commands.guild_only()
+    async def support_command(self, interaction: discord.Interaction):
+        # 言語の確認
+        file = str(interaction.guild.id) + ".ndjson"
+
+        with open('./data/language_json/' + file) as f:
+            read_data = ndjson.load(f)
+
+        language = read_data[0]["language_mode"]
+
+        #Discord上にヘルプを表示
+        if language == "ja":
+            message = "Discordサポートサーバーはこちら！\n"
+        elif language == "en":
+            message = "Support Server here!\n"
+
+        await interaction.response.send_message(message,ephemeral=False)
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(other(bot))

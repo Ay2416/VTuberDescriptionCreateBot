@@ -51,7 +51,7 @@
 
 2. 次にこのページの１番上の方にある、「Code」を押して、「Download ZIP」を押しファイルをダウンロードします。（Linuxでターミナルで行っている場合はgit clone等を使用して、ダウンロードしてください。）
 
-3. そしてそのファイルを解凍し、「.env」をテキストエディタで開き、「your_discord_bot_token」という部分にDiscordのBotトークンを入れてください。
+3. そしてそのファイルを解凍し、「.env.example」をコピーしてファイル名を「.env」に変更してください。その後「.env」をテキストエディタで開き、「your_discord_bot_token」という部分にDiscordのBotトークンを入れてください。（テストサーバー限定で動かしたい場合は「Test_server」にサーバーIDを指定してください。指定しない場合は0のままで大丈夫です。）
 
 ※「.env」が見えない場合、隠しファイル扱いとなっている可能性が高いため、下記を参考に表示できるようにしてください。
 
@@ -82,7 +82,7 @@
 
 2. Next, click on "Code" at the top of this page, and then click "Download ZIP" to download the file. (If you are using a terminal in Linux, please use git clone, etc. to download.)
 
-3. Then, unzip the file, open `.env` with a text editor, and put your Discord Bot token in the part that says `your_discord_bot_token`.
+3. Then, unzip the file, copy `.env.example` and rename it to `.env`. Open `.env` with a text editor, and put your Discord Bot token in `your_discord_bot_token`. (If you want to run it only on a test server, set your server ID in `Test_server`. If not, leaving it as 0 is fine.)
 
 ※If you cannot see `.env`, there is a high possibility that it is treated as a hidden file, so please refer to the following so that it can be displayed.
 

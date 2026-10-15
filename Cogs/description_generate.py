@@ -13,13 +13,20 @@ load_dotenv()
 # my program import
 
 
+# テストサーバー判定用のデコレータ
+def guilds_check(func):
+    if os.environ.get('Test_server') == None or os.environ.get('Test_server') == "0":
+        return func
+    else:
+        return discord.app_commands.guilds(int(os.environ.get('Test_server')))(func)
+
 class description_generate(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     # /description
     @app_commands.command(name="description",description="ロールのユーザーの情報を概要欄形式で出力します。 / Outputs description format in role users.")
-    #@discord.app_commands.guilds(int(os.environ.get('Test_server')))
+    @guilds_check
     @app_commands.guild_only()
     @app_commands.describe(title="敬称（例：さん、様など...） / honorific title (example:Mr., Ms. etc...)")
     @app_commands.describe(display_x="X（Twitter）の表記をON/OFFどちらにするか / X (Twitter) notation ON or OFF")
@@ -131,7 +138,7 @@ class description_generate(commands.Cog):
 
     # /hashtag
     @app_commands.command(name="hashtag",description="ロールのユーザのX（Twitter）IDをハッシュタグ形式で出力します。 / Outputs X(Twitter)IDs hashtag format in role users.")
-    #@discord.app_commands.guilds(int(os.environ.get('Test_server')))
+    @guilds_check
     @app_commands.guild_only()
     async def hashtag_command(self, interaction: discord.Interaction, role:discord.Role):
 
@@ -219,7 +226,7 @@ class description_generate(commands.Cog):
 
     # /template
     @app_commands.command(name="template",description="アプリ「Output description」の概要欄形式の指定を行います。/ Set description format of the [Output description] apps.")
-    #@discord.app_commands.guilds(int(os.environ.get('Test_server')))
+    @guilds_check
     @app_commands.guild_only()
     @app_commands.describe(title="敬称（例：さん、様など...） / honorific title (example:Mr., Ms. etc...)")
     @app_commands.describe(display_x="X（Twitter）の表記をON/OFFどちらにするか / X (Twitter) notation ON or OFF")

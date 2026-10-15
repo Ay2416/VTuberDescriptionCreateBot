@@ -29,11 +29,12 @@ async def on_ready():
     await bot.load_extension("Cogs.description_generate")
     await bot.load_extension("Cogs.other")
 
-    await bot.tree.sync()
-    print("グローバルコマンド同期完了！")
-
-    #await bot.tree.sync(guild=discord.Object(os.environ.get('Test_server')))
-    #print("ギルドコマンド同期完了！")
+    if os.environ.get('Test_server') == None or os.environ.get('Test_server') == "0":
+        await bot.tree.sync()
+        print("グローバルコマンド同期完了！")
+    else:
+        await bot.tree.sync(guild=discord.Object(int(os.environ.get('Test_server'))))
+        print("ギルドコマンド同期完了！")
 
     # dataフォルダがあるかの確認
     files = glob.glob('./*')
@@ -155,9 +156,16 @@ async def on_guild_remove(guild):
         os.remove("./data/guild_config/" + file)
         print("キックまたはBANされたため、" + str(guild.id) + "のguild configを削除しました。")
 
+# テストサーバー判定用のデコレータ
+def guilds_check(func):
+    if os.environ.get('Test_server') == None or os.environ.get('Test_server') == "0":
+        return func
+    else:
+        return discord.app_commands.guilds(int(os.environ.get('Test_server')))(func)
+
 # Context Menu コマンド
 @bot.tree.context_menu(name='Output Description')
-#@discord.app_commands.guilds(int(os.environ.get('Test_server')))
+@guilds_check
 async def output_description(interaction: discord.Interaction, member:discord.User):
     await ContextMenu().output_description_program(interaction, member)
 

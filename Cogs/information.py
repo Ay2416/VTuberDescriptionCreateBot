@@ -1,4 +1,5 @@
 # Discord bot import
+import os
 import discord
 from discord.ext import commands
 from discord import app_commands
@@ -7,8 +8,15 @@ from discord import app_commands
 from Cogs.CommandPrograms.information_add import add_program
 from Cogs.CommandPrograms.information_delete import delete_program
 from Cogs.CommandPrograms.information_list import list_program
+from Cogs.CommandPrograms.information_input import input_program
+# テストサーバー判定用のデコレータ
+def guilds_check(func):
+    if os.environ.get('Test_server') == None or os.environ.get('Test_server') == "0":
+        return func
+    else:
+        return discord.app_commands.guilds(int(os.environ.get('Test_server')))(func)
 
-#@discord.app_commands.guilds(int(os.environ.get('Test_server')))
+@guilds_check
 class information(app_commands.Group):
     def __init__(self, bot: commands.Bot, **kwargs):
         super().__init__(**kwargs)
@@ -45,6 +53,22 @@ class information(app_commands.Group):
     async def information_list_command(self, interaction: discord.Interaction):
 
         await list_program().list_interaction(interaction)
+
+    # /information input
+    @app_commands.command(name="input",description="このサーバーの登録されている概要データをCSVファイルから一括で追加登録します。 / Add data for this server from a CSV file.")
+    @app_commands.guild_only()
+    @guilds_check
+    async def information_input_command(self, interaction: discord.Interaction, file:discord.Attachment):
+
+        await input_program().input_interaction(interaction, file)
+
+    # /information output
+    @app_commands.command(name="output",description="このサーバーの登録されている概要データをCSVファイルで出力します。 / Outputs the registered data in a CSV file.")
+    @app_commands.guild_only()
+    @guilds_check
+    async def information_output_command(self, interaction: discord.Interaction):
+
+        await output_program().output_interaction(interaction)
 
 async def setup(bot: commands.Bot):
     bot.tree.add_command(information(bot, name="information"))
