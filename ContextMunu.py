@@ -115,12 +115,12 @@ class ContextMenu:
                         text += read_data1[i]["name"] + title + "\n配信サイト：" + stream_url + "\n"
 
                         if display_x == "on":
-                            text += "X（Twitter）：https:\//x.com/" + read_data1[i]["x_name"] + "\n" 
+                            text += "X（Twitter）：https\\://x.com/" + read_data1[i]["x_name"] + "\n" 
                     else:
                         text += title + read_data1[i]["name"] + "\nStream Site:" + stream_url + "\n"
 
                         if display_x == "on":
-                            text += "\nX(Twitter):https:\//x.com/" + read_data1[i]["x_name"] + "\n"
+                            text += "\nX(Twitter):https\\://x.com/" + read_data1[i]["x_name"] + "\n"
 
                     text += "\n"
 

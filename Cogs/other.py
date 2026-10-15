@@ -43,7 +43,7 @@ class other(commands.Cog):
         if language == "ja":
             embed=discord.Embed(title="コマンドリスト")
             embed.add_field(name="/inforaction add name:[表示させたい名前] member:[どのDiscordユーザーに結びつけるか] stream_site_url[配信しているサイトのURL] x_url:[X（Twitter）のURL] number_interrupt:[登録されている番号のどこに割り込ませたいか]", 
-                            value="概要欄生成に使う情報を登録します。\n※URLは全て「https\://~」となるように入力してください。\n※「member」については任意入力です。入力がない場合は自分になります。\n※「number_interrupt」については任意入力です。順番を指定する番号は/information listで見ることのできる順番と見比べて指定してください。", inline=False)
+                            value="概要欄生成に使う情報を登録します。\n※URLは全て「https\\://~」となるように入力してください。\n※「member」については任意入力です。入力がない場合は自分になります。\n※「number_interrupt」については任意入力です。順番を指定する番号は/information listで見ることのできる順番と見比べて指定してください。", inline=False)
             embed.add_field(name="/information delete", value="概要欄生成に使う情報を削除します。", inline=False)
             embed.add_field(name="/information list", value="概要欄生成に使う情報を一覧表示します。", inline=False)
             embed.add_field(name="/order change", value="指定した番号と番号を入れ替える処理を行います。", inline=False)
@@ -58,7 +58,7 @@ class other(commands.Cog):
         else:
             embed=discord.Embed(title="Command list")
             embed.add_field(name="/inforaction add name:[name you want to display] member:[which Discord user to link to] stream_site_url[URL of the site you are distributing] x_url:[X (Twitter)] number_interrupt:[where in the registered number you want to interrupt]",
-                            value="Register the information used to generate the summary field. \n※Please enter all URLs so that they are all [https\://~].\n※About [member], it is an optional input. If there is no input, it will be you. \n※It is optional to input about [number_interrupt]. The number to specify the order should be compared with the order that can be seen in the /information list." , inline=False)
+                            value="Register the information used to generate the summary field. \n※Please enter all URLs so that they are all [https\\://~].\n※About [member], it is an optional input. If there is no input, it will be you. \n※It is optional to input about [number_interrupt]. The number to specify the order should be compared with the order that can be seen in the /information list." , inline=False)
             embed.add_field(name="/information delete", value="Delete the information used to generate the summary field.", inline=False)
             embed.add_field(name="/information list", value="List the information used to generate the summary field.", inline=False)
             embed.add_field(name="/order change", value="Swap the number with the specified number." , inline=False)
