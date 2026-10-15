@@ -29,12 +29,19 @@ async def on_ready():
     await bot.load_extension("Cogs.description_generate")
     await bot.load_extension("Cogs.other")
 
-    if os.environ.get('Test_server') == None or os.environ.get('Test_server') == "0":
+    if os.environ.get('Test_server') != None and os.environ.get('Test_server') != "0":
+        test_guild = discord.Object(int(os.environ.get('Test_server')))
+        bot.tree.copy_global_to(guild=test_guild)
+        await bot.tree.sync(guild=test_guild)
+        print("テストサーバーコマンド同期完了！")
+    else:
         await bot.tree.sync()
         print("グローバルコマンド同期完了！")
-    else:
-        await bot.tree.sync(guild=discord.Object(int(os.environ.get('Test_server'))))
-        print("ギルドコマンド同期完了！")
+
+        if os.environ.get('Beta_server') != None and os.environ.get('Beta_server') != "0":
+            beta_guild = discord.Object(int(os.environ.get('Beta_server')))
+            await bot.tree.sync(guild=beta_guild)
+            print("ベータサーバーコマンド同期完了！")
 
     # dataフォルダがあるかの確認
     files = glob.glob('./*')
@@ -156,16 +163,8 @@ async def on_guild_remove(guild):
         os.remove("./data/guild_config/" + file)
         print("キックまたはBANされたため、" + str(guild.id) + "のguild configを削除しました。")
 
-# テストサーバー判定用のデコレータ
-def guilds_check(func):
-    if os.environ.get('Test_server') == None or os.environ.get('Test_server') == "0":
-        return func
-    else:
-        return discord.app_commands.guilds(int(os.environ.get('Test_server')))(func)
-
 # Context Menu コマンド
 @bot.tree.context_menu(name='Output Description')
-@guilds_check
 async def output_description(interaction: discord.Interaction, member:discord.User):
     await ContextMenu().output_description_program(interaction, member)
 

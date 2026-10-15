@@ -12,20 +12,12 @@ load_dotenv()
 # my program import
 
 
-# テストサーバー判定用のデコレータ
-def guilds_check(func):
-    if os.environ.get('Test_server') == None or os.environ.get('Test_server') == "0":
-        return func
-    else:
-        return discord.app_commands.guilds(int(os.environ.get('Test_server')))(func)
-
 class other(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     # /help
     @app_commands.command(name="help",description="コマンドの一覧と説明を出します。 / List and explain the commands.")
-    @guilds_check
     @app_commands.guild_only()
     async def help_command(self, interaction: discord.Interaction):
 
@@ -98,7 +90,6 @@ class other(commands.Cog):
     
     # /language
     @app_commands.command(name="language",description="言語を変更します。（jaまたはen） / Change language. (ja or en)")
-    @guilds_check
     @app_commands.guild_only()
     @app_commands.choices(language=[discord.app_commands.Choice(name="ja",value="ja"),discord.app_commands.Choice(name="en",value="en")])
     async def language_command(self, interaction: discord.Interaction,language:str):
@@ -160,7 +151,6 @@ class other(commands.Cog):
 
     # /support
     @app_commands.command(name="support",description="サポートサーバーのURLを表示します。 / Support server URL display.")
-    @guilds_check
     @app_commands.guild_only()
     async def support_command(self, interaction: discord.Interaction):
         # 言語の確認

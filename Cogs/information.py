@@ -9,14 +9,20 @@ from Cogs.CommandPrograms.information_add import add_program
 from Cogs.CommandPrograms.information_delete import delete_program
 from Cogs.CommandPrograms.information_list import list_program
 from Cogs.CommandPrograms.information_input import input_program
-# テストサーバー判定用のデコレータ
-def guilds_check(func):
-    if os.environ.get('Test_server') == None or os.environ.get('Test_server') == "0":
-        return func
-    else:
-        return discord.app_commands.guilds(int(os.environ.get('Test_server')))(func)
+# ベータ版機能判定用のデコレータ
+def beta_check(func):
+    guilds = []
+    if os.environ.get('Beta_server') != None and os.environ.get('Beta_server') != "0":
+        guilds.append(int(os.environ.get('Beta_server')))
+    if os.environ.get('Test_server') != None and os.environ.get('Test_server') != "0":
+        if int(os.environ.get('Test_server')) not in guilds:
+            guilds.append(int(os.environ.get('Test_server')))
 
-@guilds_check
+    if len(guilds) > 0:
+        return discord.app_commands.guilds(*guilds)(func)
+    else:
+        return discord.app_commands.guilds(0)(func)
+
 class information(app_commands.Group):
     def __init__(self, bot: commands.Bot, **kwargs):
         super().__init__(**kwargs)
@@ -57,7 +63,7 @@ class information(app_commands.Group):
     # /information input
     @app_commands.command(name="input",description="このサーバーの登録されている概要データをCSVファイルから一括で追加登録します。 / Add data for this server from a CSV file.")
     @app_commands.guild_only()
-    @guilds_check
+    @beta_check
     async def information_input_command(self, interaction: discord.Interaction, file:discord.Attachment):
 
         await input_program().input_interaction(interaction, file)
@@ -65,7 +71,7 @@ class information(app_commands.Group):
     # /information output
     @app_commands.command(name="output",description="このサーバーの登録されている概要データをCSVファイルで出力します。 / Outputs the registered data in a CSV file.")
     @app_commands.guild_only()
-    @guilds_check
+    @beta_check
     async def information_output_command(self, interaction: discord.Interaction):
 
         await output_program().output_interaction(interaction)
