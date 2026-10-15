@@ -17,10 +17,17 @@ load_dotenv()
 def beta_check(func):
     guilds = []
     if os.environ.get('Beta_server') != None and os.environ.get('Beta_server') != "0":
-        guilds.append(int(os.environ.get('Beta_server')))
+        for s in os.environ.get('Beta_server').split(','):
+            s = s.strip()
+            if s != "" and s != "0":
+                if int(s) not in guilds:
+                    guilds.append(int(s))
     if os.environ.get('Test_server') != None and os.environ.get('Test_server') != "0":
-        if int(os.environ.get('Test_server')) not in guilds:
-            guilds.append(int(os.environ.get('Test_server')))
+        for s in os.environ.get('Test_server').split(','):
+            s = s.strip()
+            if s != "" and s != "0":
+                if int(s) not in guilds:
+                    guilds.append(int(s))
 
     if len(guilds) > 0:
         return discord.app_commands.guilds(*guilds)(func)

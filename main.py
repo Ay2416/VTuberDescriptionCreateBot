@@ -29,18 +29,36 @@ async def on_ready():
     await bot.load_extension("Cogs.description_generate")
     await bot.load_extension("Cogs.other")
 
-    if os.environ.get('Test_server') != None and os.environ.get('Test_server') != "0":
-        test_guild = discord.Object(int(os.environ.get('Test_server')))
-        bot.tree.copy_global_to(guild=test_guild)
-        await bot.tree.sync(guild=test_guild)
+    test_server_env = os.environ.get('Test_server')
+    test_guilds = []
+    if test_server_env != None and test_server_env != "0":
+        for s in test_server_env.split(','):
+            s = s.strip()
+            if s != "" and s != "0":
+                test_guilds.append(int(s))
+
+    if len(test_guilds) > 0:
+        for i in range(0, len(test_guilds)):
+            test_guild = discord.Object(test_guilds[i])
+            bot.tree.copy_global_to(guild=test_guild)
+            await bot.tree.sync(guild=test_guild)
         print("テストサーバーコマンド同期完了！")
     else:
         await bot.tree.sync()
         print("グローバルコマンド同期完了！")
 
-        if os.environ.get('Beta_server') != None and os.environ.get('Beta_server') != "0":
-            beta_guild = discord.Object(int(os.environ.get('Beta_server')))
+        beta_server_env = os.environ.get('Beta_server')
+        beta_guilds = []
+        if beta_server_env != None and beta_server_env != "0":
+            for s in beta_server_env.split(','):
+                s = s.strip()
+                if s != "" and s != "0":
+                    beta_guilds.append(int(s))
+
+        for i in range(0, len(beta_guilds)):
+            beta_guild = discord.Object(beta_guilds[i])
             await bot.tree.sync(guild=beta_guild)
+        if len(beta_guilds) > 0:
             print("ベータサーバーコマンド同期完了！")
 
     # dataフォルダがあるかの確認
