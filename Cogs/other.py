@@ -62,12 +62,26 @@ class other(commands.Cog):
             embed.add_field(name="/language language:[Select language (ja/en)]", value="Change the language of this bot's command." , inline=False)
             embed.add_field(name="/help", value="Give a brief usage of this Bot's command." , inline=False)
             embed.add_field(name="/support", value="Displays the URL of the support server." , inline=False)
-        #embed.add_field(name="", inline=False)
+        # もしサーバー限定コマンドの実装があった場合の表記をした場合はここに書く
+        beta_guilds = []
+        if os.environ.get('Beta_server') != None and os.environ.get('Beta_server') != "0":
+            beta_guilds.append(int(os.environ.get('Beta_server')))
+        if os.environ.get('Test_server') != None and os.environ.get('Test_server') != "0":
+            if int(os.environ.get('Test_server')) not in beta_guilds:
+                beta_guilds.append(int(os.environ.get('Test_server')))
 
-        '''
-        if interaction.guild.id == your_guild_id: # もしサーバー限定コマンドの実装があった場合の表記をした場合はここに書く
-            embed.add_field(name="", value="", inline=False)
-        '''
+        if interaction.guild.id in beta_guilds:
+            if language == "ja":
+                embed.add_field(name="/information input file:[CSVファイル]", value="概要欄生成に使う情報をCSVファイルから一括で登録します。", inline=False)
+                embed.add_field(name="/information output", value="概要欄生成に使う情報をCSVファイルで出力します。", inline=False)
+                embed.add_field(name="/event event:[概要欄生成をさせたいイベント] display_x:[X（Twitter）の欄を表示させるかどうか（ON/OFF）] title:[敬称の指定]",
+                                value="指定したイベントの参加者全員の情報を概要欄形式で表示します。\n※「title」については任意入力です。入力がない場合は何もつかない状態で表示されます。", inline=False)
+            else:
+                embed.add_field(name="/information input file:[CSV file]", value="Register the information used to generate the summary field in bulk from a CSV file.", inline=False)
+                embed.add_field(name="/information output", value="Outputs the information used to generate the summary field in a CSV file.", inline=False)
+                embed.add_field(name="/event event:[event you want to generate description] display_x:[whether to display X (Twitter) field (ON/OFF)] title:[specify honorific title]",
+                                value="Displays information about all attendees of the specified event in a summary column format. \n*About [title], it is an optional input. If there is no input, it will be displayed with nothing attached.", inline=False)
+
         await interaction.followup.send(embed=embed)
 
         if language == "ja":
