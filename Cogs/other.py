@@ -79,13 +79,13 @@ class other(commands.Cog):
 
         if interaction.guild.id in beta_guilds:
             if language == "ja":
-                embed.add_field(name="/information input file:[CSVファイル]", value="概要欄生成に使う情報をCSVファイルから一括で登録します。", inline=False)
-                embed.add_field(name="/information output", value="概要欄生成に使う情報をCSVファイルで出力します。", inline=False)
+                embed.add_field(name="/information input file:[JSONファイル]", value="概要欄生成に使う情報をJSONファイルから一括で登録します。", inline=False)
+                embed.add_field(name="/information output", value="概要欄生成に使う情報をJSONファイルで出力します。", inline=False)
                 embed.add_field(name="/event event:[概要欄生成をさせたいイベント] display_x:[X（Twitter）の欄を表示させるかどうか（ON/OFF）] title:[敬称の指定]",
                                 value="指定したイベントの参加者全員の情報を概要欄形式で表示します。\n※「title」については任意入力です。入力がない場合は何もつかない状態で表示されます。", inline=False)
             else:
-                embed.add_field(name="/information input file:[CSV file]", value="Register the information used to generate the summary field in bulk from a CSV file.", inline=False)
-                embed.add_field(name="/information output", value="Outputs the information used to generate the summary field in a CSV file.", inline=False)
+                embed.add_field(name="/information input file:[JSON file]", value="Register the information used to generate the summary field in bulk from a JSON file.", inline=False)
+                embed.add_field(name="/information output", value="Outputs the information used to generate the summary field in a JSON file.", inline=False)
                 embed.add_field(name="/event event:[event you want to generate description] display_x:[whether to display X (Twitter) field (ON/OFF)] title:[specify honorific title]",
                                 value="Displays information about all attendees of the specified event in a summary column format. \n*About [title], it is an optional input. If there is no input, it will be displayed with nothing attached.", inline=False)
 

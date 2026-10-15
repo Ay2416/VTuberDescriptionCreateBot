@@ -68,7 +68,7 @@ class information(app_commands.Group):
         await list_program().list_interaction(interaction)
 
     # /information input
-    @app_commands.command(name="input",description="このサーバーの登録されている概要データをCSVファイルから一括で追加登録します。 / Add data for this server from a CSV file.")
+    @app_commands.command(name="input",description="このサーバーの登録されている概要データをJSONファイルから一括で追加登録します。 / Add data for this server from a JSON file.")
     @app_commands.guild_only()
     @beta_check
     async def information_input_command(self, interaction: discord.Interaction, file:discord.Attachment):
@@ -76,7 +76,7 @@ class information(app_commands.Group):
         await input_program().input_interaction(interaction, file)
 
     # /information output
-    @app_commands.command(name="output",description="このサーバーの登録されている概要データをCSVファイルで出力します。 / Outputs the registered data in a CSV file.")
+    @app_commands.command(name="output",description="このサーバーの登録されている概要データをJSONファイルで出力します。 / Outputs the registered data in a JSON file.")
     @app_commands.guild_only()
     @beta_check
     async def information_output_command(self, interaction: discord.Interaction):
