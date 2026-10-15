@@ -89,9 +89,16 @@ class ContextMenu:
             else:
                 title = title + " "
 
+        channel_sent = interaction.client.get_channel(interaction.channel_id)
+
+        # アプリ実行メッセージを送信
+        if language == "ja":
+            await interaction.followup.send("概要欄を生成しました！")
+        else:
+            await interaction.followup.send("Generated description!")
+
         cut = 10
         count = 0
-        followup_send = 0
         for i in range(0, len(read_data1)):
             for j in range(0, len(role.members)):
                 # Botは無視する
@@ -123,25 +130,14 @@ class ContextMenu:
                         cut = cut + 10
 
                         #表示させる
-                        if followup_send == 0:
-                            await interaction.followup.send(text)
-                        else:
-                            #print(str(interaction.channel_id))
-                            channel_sent = interaction.client.get_channel(interaction.channel_id)
-                            await channel_sent.send(text)
+                        await channel_sent.send(text)
 
-                        text = "\u200b\n"
-                        followup_send += 1
+                        text = ""
 
                         await asyncio.sleep(1)
                     
             if i == len(read_data1) - 1:
                 #表示させる
-                if followup_send == 0:
-                    await interaction.followup.send(text)
-                else:
-                    #print(str(interaction.channel_id))
-                    channel_sent = interaction.client.get_channel(interaction.channel_id)
-                    await channel_sent.send(text)
+                await channel_sent.send(text)
                 
                 return
